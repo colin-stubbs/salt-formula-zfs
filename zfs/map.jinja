@@ -1,0 +1,42 @@
+{% import_yaml 'zfs/defaults.yaml' as default_settings %}
+
+{% set os_family_map = salt['grains.filter_by']({
+    'default': {
+      'lookup': {
+        'packages': [
+          'libzfs2',
+          'zfs',
+        ],
+        'packages_dkms': [
+          'zfs-dkms',
+          'kernel-devel',
+        ],
+        'module_method': 'kmod',
+        'services': {
+          'zed': 'zfs-zed',
+          'share': 'zfs-share',
+          'mount': 'zfs-mount',
+          'import_cache': 'zfs-import-cache',
+          'import_scan': 'zfs-import-scan',
+        },
+        'files': {
+          'zed_rc': '/etc/zfs/zed.d/zed.rc',
+          'modprobe': '/etc/modprobe.d/zfs.conf'
+        },
+      },
+    },
+  }, grain='os', default='default', merge=salt['pillar.get']('zfs:lookup')) %}
+
+{% set os_map = salt['grains.filter_by']({
+    'default': {
+    },
+  }, grain='os', default='default', merge=os_family_map) %}
+
+{% do default_settings.zfs.update(os_map) %}
+
+{% set zfs_settings = salt['pillar.get'](
+    'zfs',
+    default=default_settings.zfs,
+    merge=True
+  )
+%}
