@@ -5,8 +5,7 @@ Configure ZFS and services.
 
 .. note::
 
-    To enable RPM repo you can use pkgrepo.zfs from `salt-formula-pkgrepo
-    <https://github.com/colin-stubbs/salt-formula-pkgrepo>`
+    To enable RPM repo you can use pkgrepo.zfs from https://github.com/colin-stubbs/salt-formula-pkgrepo
 
 .. note::
 
